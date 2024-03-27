@@ -1,1 +1,4 @@
 weights/llama-7b
+weights/shikra-7b
+*.pyc
+*.pyi

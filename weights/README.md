@@ -7,6 +7,8 @@ git lfs install --system
 git clone https://huggingface.co/huggyllama/llama-7b
 
 # Download the Shikra Weights
+mkdir weights/shikra-7b
+
 python mllm/models/shikra/apply_delta.py \
     --base /path/to/llama-7b \
     --target /output/path/to/shikra-7b \
