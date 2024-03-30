@@ -1,4 +1,5 @@
 weights/llama-7b
 weights/shikra-7b
+data/
 *.pyc
 *.pyi
