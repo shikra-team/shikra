@@ -1,0 +1,45 @@
+#!/bin/bash
+#SBATCH -c 4
+#SBATCH --mem=32G
+#SBATCH --time=10:00:00
+#SBATCH --gres=gpu:1
+#SBATCH --constraint=gpu32
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user an963984@ucf.edu
+
+#SBATCH --output=shikra-eval-rec-slurm-%J.out
+#SBATCH --job-name=Shikra-Rec-Eval
+
+# Output some preliminaries before we begin
+date
+echo "Slurm nodes: $SLURM_JOB_NODELIST"
+NUM_GPUS=`echo $GPU_DEVICE_ORDINAL | tr ',' '\n' | wc -l`
+echo "You were assigned $NUM_GPUS gpu(s)"
+
+# Load the Python and CUDA modules
+module load gasp/gasp-miniconda-4.3.30
+
+# List the modules that are loaded
+module list
+
+# Activate the conda environment
+export PATH=/home/aelkommos/.conda/envs/shikra/bin:$PATH
+
+# Check which Python will be used
+which python
+python --version
+
+
+# Run PyTorch Training
+echo "Shikra Eval Start:"
+module load accelerate
+
+srun accelerate launch --num_processes 4 \
+        --main_process_port 23786 \
+        mllm/pipeline/finetune.py \
+        config/shikra_eval_multi_rec.py \
+        --cfg-options model_args.model_name_or_path=weights/shikra-7b
+
+# You're done!
+echo "Ending script..."
+date
