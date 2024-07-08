@@ -142,7 +142,7 @@ class ShikraLlamaModel(LlamaModel):
                                                               cur_input_embeds[image_start_token_pos + num_patches + 2:].detach()), dim=0)
                         else:
                             cur_new_input_embeds = torch.cat((cur_input_embeds[:image_start_token_pos + 1], cur_image_features,
-                                                              cur_input_embeds[image_start_token_pos + num_patches + 1:]), dim=0)
+                                                              cur_input_embeds[image_start_token_pos + 1:]), dim=0)
                         cur_image_idx += 1
                     new_input_embeds.append(cur_new_input_embeds)
                 else:
